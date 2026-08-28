@@ -7,7 +7,7 @@ namespace AddressBook.Models
 
     public enum ContactCategory
     {
-        Bussiness,
+        Business,
         Family,
         Other
     }

@@ -1,6 +1,23 @@
 @AddressBook_HostAddress = http://localhost:5207
 
-GET {{AddressBook_HostAddress}}/weatherforecast/
-Accept: application/json
+# GET {{AddressBook_HostAddress}}/weatherforecast/
+# Accept: application/json
 
+
+PUT {{AddressBook_HostAddress}}/contacts/105
+Content-Type: application/json
+
+{
+  "firstName": "John",
+  "lastName": "Doe",
+  "dateOfBirth": "1990-01-01",
+  "title": 1,
+  "gender": 1,
+  "contactCategory": 1,
+  "phones": [
+    { "phoneID": 0, "phoneNumber": "1234567890", "contactMethodType": 1 }
+  ],
+  "emails": [],
+  "socialMedias": []
+}
 ###
