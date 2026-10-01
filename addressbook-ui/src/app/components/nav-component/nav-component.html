@@ -1,0 +1,30 @@
+<!-- <div class="example-container" [class.example-is-mobile]="isMobile()"> -->
+
+<mat-toolbar style="background-color:#5788b9; color: white;">
+    <!-- <button matIconButton class="example-icon" aria-label="Example icon-button with menu icon">
+        <mat-icon>menu</mat-icon> </button> -->
+    <button matIconButton (click)="openSidenav()"><mat-icon>menu</mat-icon></button>
+
+    <span class="material-symbols-outlined">group</span>
+
+    <span>Address Book</span>
+    <span class="example-spacer"></span>
+</mat-toolbar>
+
+<mat-sidenav-container class="example-container">
+    <mat-sidenav #sidenav mode="side" [opened]="opened()">
+
+        <mat-nav-list>
+            <p><button mat-button routerLink="contact"><mat-icon>contacts</mat-icon>Contacts</button></p>
+            <p><button mat-button routerLink="newcontact"><mat-icon>person_add</mat-icon>Add Contact</button></p>
+            <p><button mat-button routerLink="categories"><mat-icon>label_important</mat-icon>Categories</button></p>
+
+        </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+        <router-outlet />
+    </mat-sidenav-content>
+</mat-sidenav-container>
+
+<!-- </div> -->

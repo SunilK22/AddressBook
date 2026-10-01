@@ -1,0 +1,87 @@
+<form class="example-form">
+    <header>
+        <h3 style="background-color:#e9ebed; color: primary">
+            Personal Information
+        </h3>
+    </header>
+    <div class="container">
+        <mat-label>
+            Title
+            <div>
+                <mat-form-field>
+                    <mat-label>--Select--</mat-label>
+                    <mat-select>
+                        <!-- @for (food of foods; track food) {
+                    <mat-option [value]="food.value">{{food.viewValue}}</mat-option>
+                    } -->
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </mat-label>
+        <label>
+            First Name
+            <div>
+                <input matInput />
+            </div>
+        </label>
+
+        <label>
+            Middle Name
+            <div>
+                <input matInput />
+            </div>
+        </label>
+        <label>
+            Last Name
+            <div>
+                <input matInput />
+            </div>
+        </label>
+
+
+    </div>
+    <div class="container">
+        <label>
+            Gender
+            <div>
+                <mat-radio-group aria-label="Select an option">
+                    <mat-radio-button value="1">Male</mat-radio-button>
+                    <mat-radio-button value="2">Female</mat-radio-button>
+                    <mat-radio-button value="2">Unknown</mat-radio-button>
+
+                </mat-radio-group>
+            </div>
+        </label>
+
+        <label>
+            Date of Birth
+            <div>
+                <mat-form-field>
+                    <mat-label>MM/DD/YYYY</mat-label>
+                    <input matInput [matDatepicker]="picker">
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+            </div>
+        </label>
+        <label>
+            Age
+            <div>
+                <input matInput disabled />
+            </div>
+        </label>
+        <label>
+            Category
+            <div>
+                <mat-form-field>
+                    <mat-label>--Select--</mat-label>
+                    <mat-select>
+                        <!-- @for (food of foods; track food) {
+                    <mat-option [value]="food.value">{{food.viewValue}}</mat-option>
+                    } -->
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </label>
+    </div>
+</form>

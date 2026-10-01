@@ -1,0 +1,144 @@
+{
+  "contact": [
+    {
+      "id": 1,
+      "name": "Sunil Kumar",
+      "category": "Work",
+      "phones": "9876543210",
+      "emails": "sunil.kumar@gmail.com"
+    },
+    {
+      "id": 2,
+      "name": "Amit Sharma",
+      "category": "Personal",
+      "phones": "9812345678",
+      "emails": "amit.sharma@gmail.com"
+    },
+    {
+      "id": 3,
+      "name": "Priya Patel",
+      "category": "Family",
+      "phones": "9765432109",
+      "emails": "priya.patel@gmail.com"
+    },
+    {
+      "id": 4,
+      "name": "Rohan Das",
+      "category": "NA",
+      "phones": "9654321098",
+      "emails": "rohan.das@gmail.com"
+    },
+    {
+      "id": 5,
+      "name": "Neha Reddy",
+      "category": "Work",
+      "phones": "9543210987",
+      "emails": "neha.reddy@gmail.com"
+    },
+    {
+      "id": 6,
+      "name": "Vikram Singh",
+      "category": "Services",
+      "phones": "9432109876",
+      "emails": "vikram.singh@gmail.com"
+    },
+    {
+      "id": 7,
+      "name": "Ananya Rao",
+      "category": "Personal",
+      "phones": "9321098765",
+      "emails": "ananya.rao@gmail.com"
+    },
+    {
+      "id": 8,
+      "name": "Rahul Verma",
+      "category": "Work",
+      "phones": "9210987654",
+      "emails": "rahul.verma@gmail.com"
+    },
+    {
+      "id": 9,
+      "name": "Deepa Nair",
+      "category": "Family",
+      "phones": "9109876543",
+      "emails": "deepa.nair@gmail.com"
+    },
+    {
+      "id": 10,
+      "name": "Sanjay Gupta",
+      "category": "NA",
+      "phones": "9098765432",
+      "emails": "sanjay.gupta@gmail.com"
+    },
+    {
+      "id": 11,
+      "name": "Meera Joshi",
+      "category": "Personal",
+      "phones": "9887654321",
+      "emails": "meera.joshi@gmail.com"
+    },
+    {
+      "id": 12,
+      "name": "Arjun Mishra",
+      "category": "Work",
+      "phones": "9776543210",
+      "emails": "arjun.mishra@gmail.com"
+    },
+    {
+      "id": 13,
+      "name": "Divya Choudhury",
+      "category": "Services",
+      "phones": "9665432109",
+      "emails": "divya.c@gmail.com"
+    },
+    {
+      "id": 14,
+      "name": "Karan Malhotra",
+      "category": "NA",
+      "phones": "9554321098",
+      "emails": "karan.m@gmail.com"
+    },
+    {
+      "id": 15,
+      "name": "Pooja Hegde",
+      "category": "Family",
+      "phones": "9443210987",
+      "emails": "pooja.hegde@gmail.com"
+    },
+    {
+      "id": 16,
+      "name": "Vivek Mehta",
+      "category": "Work",
+      "phones": "9332109876",
+      "emails": "vivek.mehta@gmail.com"
+    },
+    {
+      "id": 17,
+      "name": "Kriti Saxena",
+      "category": "Personal",
+      "phones": "9221098765",
+      "emails": "kriti.s@gmail.com"
+    },
+    {
+      "id": 18,
+      "name": "Aditya Joshi",
+      "category": "Work",
+      "phones": "9110987654",
+      "emails": "aditya.j@gmail.com"
+    },
+    {
+      "id": 19,
+      "name": "Shalini Pillai",
+      "category": "Family",
+      "phones": "9009876543",
+      "emails": "shalini.p@gmail.com"
+    },
+    {
+      "id": 20,
+      "name": "Rohan Kapoor",
+      "category": "Services",
+      "phones": "9898989898",
+      "emails": "rohan.k@gmail.com"
+    }
+  ]
+}

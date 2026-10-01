@@ -1,0 +1,63 @@
+<app-nav-component></app-nav-component>
+<mat-card>
+    <mat-card-header>
+        <h2>Add New Contact</h2>
+        <span class="example-spacer"></span>
+
+        <button mat-button>Save</button>
+        <button mat-button>Cancel</button>
+    </mat-card-header>
+    <mat-card-content>
+        <section>
+            <app-personal-info-component></app-personal-info-component>
+        </section>
+
+        <mat-accordion>
+            <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
+                <mat-expansion-panel-header>
+
+                    <mat-panel-title>
+                        <mat-icon>add</mat-icon>
+                        Phone Numbers
+                    </mat-panel-title>
+
+                </mat-expansion-panel-header>
+                
+            </mat-expansion-panel>
+        </mat-accordion>
+       
+        <mat-accordion>
+            <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
+                <mat-expansion-panel-header>
+
+                    <mat-panel-title>
+                        <mat-icon>add</mat-icon>
+                        Email Addresses
+                    </mat-panel-title>
+
+                </mat-expansion-panel-header>
+                
+            </mat-expansion-panel>
+        </mat-accordion>
+       
+
+        <section>
+           <mat-accordion>
+            <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
+                <mat-expansion-panel-header>
+
+                    <mat-panel-title>
+                        <mat-icon>add</mat-icon>
+                        Social Media Contacts
+                    </mat-panel-title>
+
+                </mat-expansion-panel-header>
+                
+            </mat-expansion-panel>
+        </mat-accordion>
+       
+        </section>
+
+    </mat-card-content>
+
+</mat-card>
