@@ -17,7 +17,6 @@ namespace AddressBook.Repository
         }
 
 
-
         private bool UpdateEmail(Contact contact, ContactDto contactDto)
         {
             var existingEmails = contact.Emails.ToList();
@@ -29,7 +28,6 @@ namespace AddressBook.Repository
                 if (!exists)
                 {
                     contact.Emails.Remove(email);
-                    return true;
                 }
 
             }
@@ -70,7 +68,6 @@ namespace AddressBook.Repository
                 if (!exists)
                 {
                     contact.Phones.Remove(phone);
-                    return true;
                 }
             }
 
@@ -110,7 +107,6 @@ namespace AddressBook.Repository
                 if (!exists)
                 {
                     contact.SocialMedias.Remove(sm);
-                    return true;
                 }
             }
 
@@ -139,12 +135,8 @@ namespace AddressBook.Repository
             return true;
         }
 
-        public async Task<ContactDto?> CreateContact(ContactDto newContactDto, CancellationToken token)
+        public async Task<(ContactDto?, int)> CreateContact(ContactDto newContactDto, CancellationToken token)
         {
-            if (newContactDto == null)
-            {
-                return newContactDto;
-            }
 
             var newContact = new Contact
             {
@@ -154,15 +146,15 @@ namespace AddressBook.Repository
                 DateOfBirth = newContactDto.DateOfBirth,
                 Title = newContactDto.Title,
                 Gender = newContactDto.Gender,
-                ContactCategory = newContactDto.ContactCategory
-                // age calculation is pending from dob
-                //Age
+                ContactCategory = newContactDto.ContactCategory,
+                CreatedDate = DateTime.UtcNow,
+                UpdatedDate = DateTime.UtcNow
             };
 
             context.Contacts.Add(newContact);
             await context.SaveChangesAsync(token);
 
-            return newContactDto;
+            return (newContactDto, newContact.ContactID);
 
         }
 
@@ -181,32 +173,81 @@ namespace AddressBook.Repository
             return true;
 
         }
-
-
-        public async Task<List<Contact>> GetAllContacts(CancellationToken token)
+        private ContactDto MapToDto(Contact contact)
         {
-            return await context.Contacts.Where(c => !c.IsDeleted).ToListAsync(token);
+
+            return new ContactDto
+            {
+                ContactID = contact.ContactID,
+                FirstName = contact.FirstName,
+                LastName = contact.LastName,
+                MiddleName = contact.MiddleName,
+                DateOfBirth = contact.DateOfBirth,
+                Title = contact.Title,
+                Gender = contact.Gender,
+                ContactCategory = contact.ContactCategory,
+
+                Emails = contact.Emails.Select(e => new EmailDto
+                {
+                    EmailAddressID = e.EmailAddressID,
+                    EmailAddress = e.EmailAddress,
+                    ContactMethodType = e.ContactMethodType
+
+                }).ToList(),
+
+                Phones = contact.Phones.Select(p => new PhoneDto
+                {
+                    PhoneID = p.PhoneID,
+                    PhoneNumber = p.PhoneNumber,
+                    ContactMethodType = p.ContactMethodType
+                }).ToList(),
+
+                SocialMedias = contact.SocialMedias.Select(s => new SocialMediaDto
+                {
+                    SocialMediaID = s.SocialMediaID,
+                    SocialMediaType = s.SocialMediaType,
+                    SocialMediaAddress = s.SocialMediaAddress
+                }).ToList()
+            };
         }
 
-        public async Task<Contact?> GetContactById(int id, CancellationToken token)
+        public async Task<List<ContactDto>> GetAllContacts(CancellationToken token)
         {
-            return await context.Contacts
+            var allContacts = await context.Contacts.Where(c => !c.IsDeleted).ToListAsync(token);
+
+            return allContacts.Select(MapToDto).ToList();
+        }
+
+        public async Task<ContactDto?> GetContactById(int id, CancellationToken token)
+        {
+            var data = await context.Contacts
                 .Where(c => !c.IsDeleted)
                 .Include(c => c.Phones)
                 .Include(c => c.Emails)
                 .Include(c => c.SocialMedias)
                 .FirstOrDefaultAsync(c => c.ContactID == id, token);
+
+            if (data is null)
+                return null;
+
+            return MapToDto(data);
         }
 
         public async Task<ContactDto?> UpdateContact(int id, ContactDto contactDto, CancellationToken token)
         {
-            var contact = await context.Contacts
+            var query =  context.Contacts
+                .Where(c => !c.IsDeleted)
                 .Include(c => c.Phones)
+                .Include(c => c.Emails)
+                .Include(c => c.SocialMedias);
+
+            var sql = query.ToQueryString();
+            var contact = await query
                 .FirstOrDefaultAsync(c => c.ContactID == id, token);
 
             if (contact == null || contactDto == null)
             {
-                return contactDto;
+                return null;
             }
 
             contact.FirstName = contactDto.FirstName;
@@ -216,6 +257,7 @@ namespace AddressBook.Repository
             contact.Title = contactDto.Title;
             contact.Gender = contactDto.Gender;
             contact.ContactCategory = contactDto.ContactCategory;
+            contact.UpdatedDate = DateTime.UtcNow;
 
             // add/update/delete phone
             UpdatePhone(contact, contactDto);

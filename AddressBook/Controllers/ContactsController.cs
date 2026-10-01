@@ -1,8 +1,7 @@
-﻿using AddressBook.Data;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using AddressBook.DTOs;
+﻿using AddressBook.DTOs;
 using AddressBook.Repository;
+using Microsoft.AspNetCore.Mvc;
+
 
 namespace AddressBook.Controllers
 {
@@ -10,13 +9,11 @@ namespace AddressBook.Controllers
     [Route("contacts")]
     public class ContactsController : ControllerBase
     {
-        private AddressBookContext context;
         private IContactRepo contactRepo;
 
-        public ContactsController(AddressBookContext context)
+        public ContactsController(IContactRepo contactRepo)
         {
-            this.context = context;
-            contactRepo = new ContactRepo(context);
+            this.contactRepo = contactRepo;
         }
 
         [HttpGet]
@@ -62,16 +59,16 @@ namespace AddressBook.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateContact([FromBody] ContactDto newContactDto, CancellationToken cToken)
         {
-
-            var newContact = await contactRepo.CreateContact(newContactDto, cToken);
-
-            if (newContact == null)
+            if (newContactDto == null)
             {
                 return BadRequest("Invalid contact details provided.");
             }
+
+            var (newContact, contactId) = await contactRepo.CreateContact(newContactDto, cToken);
+
             return CreatedAtAction(
                     nameof(GetContact),
-                    //new { id = newContact.ContactID },
+                    new { id = contactId },
                     new { success = true, message = "Contact successfully created.", data = newContact }
                 );
 
@@ -80,18 +77,14 @@ namespace AddressBook.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateContact(int id, [FromBody] ContactDto contactDto, CancellationToken cToken)
         {
-            var contact = await context.Contacts
-                .Include(c => c.Phones)
-                .FirstOrDefaultAsync(c => c.ContactID == id, cToken);
 
-            if (contact == null || contactDto == null)
+            var updated = await contactRepo.UpdateContact(id, contactDto, cToken);
+            if (updated is null)
             {
                 return NotFound();
             }
 
-            await contactRepo.UpdateContact(id, contactDto, cToken);
-
-            return Ok(contactDto);
+            return Ok(updated);
         }
     }
 }

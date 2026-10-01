@@ -6,7 +6,7 @@ namespace AddressBook.DTOs
 {
     public class SocialMediaDto
     {
-        public int SocialMediaID { get; }
+        public int SocialMediaID { get; set; }
 
         [MaxLength(50)]
         public required string SocialMediaAddress { get; set; }

@@ -6,7 +6,7 @@ namespace AddressBook.DTOs
 {
     public class EmailDto
     {
-        public int EmailAddressID { get; }
+        public int EmailAddressID { get; set; }
 
         [MaxLength(254)]
         public required string EmailAddress { get; set; }

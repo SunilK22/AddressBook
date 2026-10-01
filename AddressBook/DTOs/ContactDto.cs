@@ -6,6 +6,7 @@ namespace AddressBook.DTOs
 {
     public class ContactDto
     {
+        public int ContactID { get; set; }
 
         [MaxLength(50)]
         public required string FirstName { get; set; }
@@ -18,12 +19,12 @@ namespace AddressBook.DTOs
 
         public required DateOnly DateOfBirth { get; set; }
 
-      
         public Title Title { get; set; }
 
         public Gender Gender { get; set; }
 
         public ContactCategory ContactCategory { get; set; }
+
 
         public List<PhoneDto> Phones { get; set; } = [];
 

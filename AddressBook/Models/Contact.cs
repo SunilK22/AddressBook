@@ -21,7 +21,7 @@ namespace AddressBook.Models
         [Unicode(false)]
         public string? MiddleName { get; set; }
 
-        public int Age { get; set; }
+        //public int Age { get; set; }
 
         public required DateOnly DateOfBirth { get; set; }
 
