@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AddressBook.Controllers
 {
     [ApiController]
-    [Route("contacts")]
+    [Route("api/contacts")]
     public class ContactsController : ControllerBase
     {
         private IContactRepo contactRepo;

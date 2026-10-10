@@ -15,7 +15,7 @@ namespace AddressBook.Models
 
         [MaxLength(50)]
         [Unicode(false)]
-        public string? LastName { get; set; }
+        public required string? LastName { get; set; }
 
         [MaxLength(50)]
         [Unicode(false)]

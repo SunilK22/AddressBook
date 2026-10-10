@@ -2,6 +2,8 @@
 using AddressBook.DTOs;
 using AddressBook.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.Contracts;
+using System.Reflection.Metadata;
 
 
 
@@ -39,13 +41,7 @@ namespace AddressBook.Repository
 
                 if (existingEmail is null)
                 {
-                    var newEmail = new Email
-                    {
-                        Contact = contact,
-                        EmailAddress = emaildto.EmailAddress,
-                        ContactMethodType = emaildto.ContactMethodType
-                    };
-                    contact.Emails.Add(newEmail);
+                    AddEmail(contact, emaildto);
                 }
                 else
                 {
@@ -56,6 +52,19 @@ namespace AddressBook.Repository
 
             return true;
         }
+
+        private bool AddEmail(Contact contact, EmailDto emaildto)
+        {
+            var newEmail = new Email
+            {
+                Contact = contact,
+                EmailAddress = emaildto.EmailAddress,
+                ContactMethodType = emaildto.ContactMethodType
+            };
+            contact.Emails.Add(newEmail);
+            return true;
+        }
+
 
         private bool UpdatePhone(Contact contact, ContactDto contactDto)
         {
@@ -76,15 +85,11 @@ namespace AddressBook.Repository
             {
                 var existingPhone = contact.Phones.FirstOrDefault(p => p.PhoneID == phonedto.PhoneID);
 
+
                 if (existingPhone is null)
                 {
-                    var newphone = new Phone
-                    {
-                        Contact = contact,
-                        PhoneNumber = phonedto.PhoneNumber,
-                        ContactMethodType = phonedto.ContactMethodType
-                    };
-                    contact.Phones.Add(newphone);
+                    AddPhone(contact, phonedto);
+
                 }
                 else
                 {
@@ -95,6 +100,19 @@ namespace AddressBook.Repository
 
             return true;
 
+        }
+
+        private bool AddPhone(Contact contact, PhoneDto phonedto)
+        {
+            var newphone = new Phone
+            {
+                Contact = contact,
+                PhoneNumber = phonedto.PhoneNumber,
+                ContactMethodType = phonedto.ContactMethodType
+            };
+            contact.Phones.Add(newphone);
+
+            return true;
         }
 
         private bool UpdateSocialMedia(Contact contact, ContactDto contactDto)
@@ -117,13 +135,7 @@ namespace AddressBook.Repository
 
                 if (existingSM is null)
                 {
-                    var newSM = new SocialMedia
-                    {
-                        Contact = contact,
-                        SocialMediaAddress = smdto.SocialMediaAddress,
-                        SocialMediaType = smdto.SocialMediaType
-                    };
-                    contact.SocialMedias.Add(newSM);
+                    AddSocialMedia(contact, smdto);
                 }
                 else
                 {
@@ -135,6 +147,18 @@ namespace AddressBook.Repository
             return true;
         }
 
+        private bool AddSocialMedia(Contact contact, SocialMediaDto smdto)
+        {
+            var newSM = new SocialMedia
+            {
+                Contact = contact,
+                SocialMediaAddress = smdto.SocialMediaAddress,
+                SocialMediaType = smdto.SocialMediaType
+            };
+            contact.SocialMedias.Add(newSM);
+            return true;
+        }
+
         public async Task<(ContactDto?, int)> CreateContact(ContactDto newContactDto, CancellationToken token)
         {
 
@@ -143,13 +167,32 @@ namespace AddressBook.Repository
                 FirstName = newContactDto.FirstName,
                 LastName = newContactDto.LastName,
                 MiddleName = newContactDto.MiddleName,
-                DateOfBirth = newContactDto.DateOfBirth,
+                DateOfBirth = DateOnly.Parse(newContactDto.DateOfBirth),
                 Title = newContactDto.Title,
                 Gender = newContactDto.Gender,
                 ContactCategory = newContactDto.ContactCategory,
                 CreatedDate = DateTime.UtcNow,
-                UpdatedDate = DateTime.UtcNow
+                UpdatedDate = DateTime.UtcNow,
+
             };
+            foreach (var phonedto in newContactDto.Phones)
+            {
+                this.AddPhone(newContact, phonedto);
+
+            }
+
+            foreach (var smdto in newContactDto.SocialMedias)
+            {
+                this.AddSocialMedia(newContact, smdto);
+
+
+            }
+            foreach (var emailDto in newContactDto.Emails)
+            {
+                this.AddEmail(newContact, emailDto);
+
+            }
+
 
             context.Contacts.Add(newContact);
             await context.SaveChangesAsync(token);
@@ -182,7 +225,7 @@ namespace AddressBook.Repository
                 FirstName = contact.FirstName,
                 LastName = contact.LastName,
                 MiddleName = contact.MiddleName,
-                DateOfBirth = contact.DateOfBirth,
+                DateOfBirth = contact.DateOfBirth.ToString("yyyy-MM-dd"),
                 Title = contact.Title,
                 Gender = contact.Gender,
                 ContactCategory = contact.ContactCategory,
@@ -213,7 +256,12 @@ namespace AddressBook.Repository
 
         public async Task<List<ContactDto>> GetAllContacts(CancellationToken token)
         {
-            var allContacts = await context.Contacts.Where(c => !c.IsDeleted).ToListAsync(token);
+            var allContacts = await context.Contacts
+                .Where(c => !c.IsDeleted)
+                .Include(c => c.Phones)
+                .Include(c => c.Emails)
+                .Include(c => c.SocialMedias)
+                .ToListAsync(token);
 
             return allContacts.Select(MapToDto).ToList();
         }
@@ -235,7 +283,7 @@ namespace AddressBook.Repository
 
         public async Task<ContactDto?> UpdateContact(int id, ContactDto contactDto, CancellationToken token)
         {
-            var query =  context.Contacts
+            var query = context.Contacts
                 .Where(c => !c.IsDeleted)
                 .Include(c => c.Phones)
                 .Include(c => c.Emails)
@@ -253,7 +301,7 @@ namespace AddressBook.Repository
             contact.FirstName = contactDto.FirstName;
             contact.LastName = contactDto.LastName;
             contact.MiddleName = contactDto.MiddleName;
-            contact.DateOfBirth = contactDto.DateOfBirth;
+            contact.DateOfBirth = DateOnly.Parse(contactDto.DateOfBirth);
             contact.Title = contactDto.Title;
             contact.Gender = contactDto.Gender;
             contact.ContactCategory = contactDto.ContactCategory;
@@ -272,5 +320,7 @@ namespace AddressBook.Repository
             await context.SaveChangesAsync(token);
             return contactDto;
         }
+
+
     }
 }
