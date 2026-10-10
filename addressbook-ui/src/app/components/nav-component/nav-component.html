@@ -1,14 +1,19 @@
-<!-- <div class="example-container" [class.example-is-mobile]="isMobile()"> -->
+<mat-toolbar>
 
-<mat-toolbar style="background-color:#5788b9; color: white;">
-    <!-- <button matIconButton class="example-icon" aria-label="Example icon-button with menu icon">
-        <mat-icon>menu</mat-icon> </button> -->
     <button matIconButton (click)="openSidenav()"><mat-icon>menu</mat-icon></button>
-
     <span class="material-symbols-outlined">group</span>
 
     <span>Address Book</span>
-    <span class="example-spacer"></span>
+
+    @if(isContactPage()){
+    <div class="search-container">
+        <input type="text" class="search-input" placeholder="Search contact..." />
+        <button mat-icon-button>
+            <mat-icon>search</mat-icon>
+        </button>
+    </div>
+
+    }
 </mat-toolbar>
 
 <mat-sidenav-container class="example-container">
@@ -26,5 +31,3 @@
         <router-outlet />
     </mat-sidenav-content>
 </mat-sidenav-container>
-
-<!-- </div> -->

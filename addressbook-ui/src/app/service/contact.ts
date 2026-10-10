@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Service } from '@angular/core';
+import { inject, Injectable, Service } from '@angular/core';
 import { contact } from '../model/contactmodel';
 
 @Service()
-export class Contact {
+export class ContactService {
 
-    baseurl = 'http://localhost:3000/contact';
+    baseurl = 'http://localhost:5207/api/contacts';
 
     private http = inject(HttpClient);
 

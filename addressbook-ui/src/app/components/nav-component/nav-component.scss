@@ -1,5 +1,25 @@
-.example-spacer{
-    flex: auto;
+.material-symbols-outlined {
+    margin: 0 10px 0 0px;
 }
 
+mat-toolbar {
+    display: flex;
+    padding: 0 20px;
+    height: 60px;
+    margin: 0 10px 0 0;
+    background-color: #4b6b94;
+    color: white;
+}
 
+.search-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    margin: 0 20px;
+
+}
+
+.search-input {
+    width: 100%;
+    max-width: 400px;
+}

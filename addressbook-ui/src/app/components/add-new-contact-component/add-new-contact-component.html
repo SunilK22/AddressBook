@@ -1,11 +1,10 @@
-<app-nav-component></app-nav-component>
 <mat-card>
     <mat-card-header>
         <h2>Add New Contact</h2>
         <span class="example-spacer"></span>
 
-        <button mat-button>Save</button>
-        <button mat-button>Cancel</button>
+        <button matButton="filled" mat-button>Save</button>
+        <button matButton="tonal" mat-button>Cancel</button>
     </mat-card-header>
     <mat-card-content>
         <section>
@@ -17,45 +16,57 @@
                 <mat-expansion-panel-header>
 
                     <mat-panel-title>
-                        <mat-icon>add</mat-icon>
                         Phone Numbers
                     </mat-panel-title>
-
+                    <mat-panel-description>
+                        <button matButton="filled"><mat-icon>add</mat-icon>Contact</button>
+                    </mat-panel-description>
                 </mat-expansion-panel-header>
-                
+                <app-child-table-component tableTitle="Phone Number">
+
+                </app-child-table-component>
             </mat-expansion-panel>
+
         </mat-accordion>
-       
+
         <mat-accordion>
             <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
                 <mat-expansion-panel-header>
 
                     <mat-panel-title>
-                        <mat-icon>add</mat-icon>
                         Email Addresses
                     </mat-panel-title>
+                    <mat-panel-description>
+                        <button matButton="filled"><mat-icon>add</mat-icon>Email</button>
+                    </mat-panel-description>
 
                 </mat-expansion-panel-header>
-                
+                <app-child-table-component tableTitle="Email Address">
+
+                </app-child-table-component>
             </mat-expansion-panel>
         </mat-accordion>
-       
+
 
         <section>
-           <mat-accordion>
-            <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
-                <mat-expansion-panel-header>
+            <mat-accordion>
+                <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
+                    <mat-expansion-panel-header>
 
-                    <mat-panel-title>
-                        <mat-icon>add</mat-icon>
-                        Social Media Contacts
-                    </mat-panel-title>
+                        <mat-panel-title>
+                            Social Media Contacts
+                        </mat-panel-title>
 
-                </mat-expansion-panel-header>
-                
-            </mat-expansion-panel>
-        </mat-accordion>
-       
+                        <mat-panel-description>
+                            <button matButton="filled"><mat-icon>add</mat-icon>Social Media</button>
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <app-child-table-component tableTitle="Address">
+
+                    </app-child-table-component>
+                </mat-expansion-panel>
+            </mat-accordion>
+
         </section>
 
     </mat-card-content>

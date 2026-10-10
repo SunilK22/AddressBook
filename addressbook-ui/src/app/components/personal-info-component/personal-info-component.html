@@ -1,6 +1,6 @@
-<form class="example-form">
+<form class="example-form" [formGroup]="personalInfoForm">
     <header>
-        <h3 style="background-color:#e9ebed; color: primary">
+        <h3>
             Personal Information
         </h3>
     </header>
@@ -10,10 +10,10 @@
             <div>
                 <mat-form-field>
                     <mat-label>--Select--</mat-label>
-                    <mat-select>
-                        <!-- @for (food of foods; track food) {
-                    <mat-option [value]="food.value">{{food.viewValue}}</mat-option>
-                    } -->
+                    <mat-select formControlName="title">
+                        @for (item of titles; track item) {
+                        <mat-option [value]="item.value">{{item.viewValue}}</mat-option>
+                        }
                     </mat-select>
                 </mat-form-field>
             </div>
@@ -21,20 +21,28 @@
         <label>
             First Name
             <div>
-                <input matInput />
+                <mat-form-field>
+                    <input matInput formControlName="firstname" />
+                </mat-form-field>
             </div>
         </label>
 
         <label>
             Middle Name
             <div>
-                <input matInput />
+                <mat-form-field>
+
+                    <input matInput formControlName="middlename" />
+                </mat-form-field>
             </div>
         </label>
         <label>
             Last Name
             <div>
-                <input matInput />
+                <mat-form-field>
+
+                    <input formControlName="lastname" matInput />
+                </mat-form-field>
             </div>
         </label>
 
@@ -44,7 +52,7 @@
         <label>
             Gender
             <div>
-                <mat-radio-group aria-label="Select an option">
+                <mat-radio-group formControlName="gender" aria-label="Select an option">
                     <mat-radio-button value="1">Male</mat-radio-button>
                     <mat-radio-button value="2">Female</mat-radio-button>
                     <mat-radio-button value="2">Unknown</mat-radio-button>
@@ -58,7 +66,7 @@
             <div>
                 <mat-form-field>
                     <mat-label>MM/DD/YYYY</mat-label>
-                    <input matInput [matDatepicker]="picker">
+                    <input matInput [matDatepicker]="picker" formControlName="dob">
                     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
                 </mat-form-field>
@@ -67,7 +75,9 @@
         <label>
             Age
             <div>
-                <input matInput disabled />
+                <mat-form-field>
+                    <input matInput formControlName="age" />
+                </mat-form-field>
             </div>
         </label>
         <label>
@@ -75,10 +85,10 @@
             <div>
                 <mat-form-field>
                     <mat-label>--Select--</mat-label>
-                    <mat-select>
-                        <!-- @for (food of foods; track food) {
-                    <mat-option [value]="food.value">{{food.viewValue}}</mat-option>
-                    } -->
+                    <mat-select formControlName="category">
+                        @for (item of categories; track item) {
+                        <mat-option [value]="item.value">{{item.viewValue}}</mat-option>
+                        }
                     </mat-select>
                 </mat-form-field>
             </div>
