@@ -1,4 +1,4 @@
-<form class="example-form" [formGroup]="personalInfoForm">
+<div class="example-form" [formGroup]="personalInfoForm">
     <header>
         <h3>
             Personal Information
@@ -53,9 +53,9 @@
             Gender
             <div>
                 <mat-radio-group formControlName="gender" aria-label="Select an option">
-                    <mat-radio-button value="1">Male</mat-radio-button>
-                    <mat-radio-button value="2">Female</mat-radio-button>
-                    <mat-radio-button value="2">Unknown</mat-radio-button>
+                    <mat-radio-button [value]="0">Male</mat-radio-button>
+                    <mat-radio-button [value]="1">Female</mat-radio-button>
+                    <mat-radio-button [value]="2">Other</mat-radio-button>
 
                 </mat-radio-group>
             </div>
@@ -94,4 +94,4 @@
             </div>
         </label>
     </div>
-</form>
+</div>

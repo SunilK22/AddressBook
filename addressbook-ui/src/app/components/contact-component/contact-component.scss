@@ -14,8 +14,9 @@ table {
 td,
 th {
     width: 2%;
+
 }
 
-// .mdc-button {
-//     margin: 2px;
-// }
+.mdc-data-table__header-cell {
+    padding: 0 5px;
+}

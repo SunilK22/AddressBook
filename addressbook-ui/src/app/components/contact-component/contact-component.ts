@@ -19,9 +19,9 @@ import { MatIconModule } from '@angular/material/icon';
   templateUrl: './contact-component.html',
 })
 
-export class ContactComponent implements OnInit {
+export class ContactComponent implements OnInit, AfterViewInit {
 
-  displayedColumns: string[] = ['id', 'name', 'category', 'phones', 'emails', 'socialmedias', 'actions']
+  displayedColumns: string[] = ['id', 'name', 'category', 'phones', 'emails', 'socialmedias', 'actions'];
   contacts = new MatTableDataSource<contact>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -40,25 +40,9 @@ export class ContactComponent implements OnInit {
     this.contacts.sort = this.sort;
   }
 
-  contactList: contact[] = [];
-
-  // LoadContacts() {
-  //   this.service.GetAll().subscribe({
-  //     next: data => {
-  //       this.contacts = data;
-  //     },
-  //     error: err => {
-  //       console.error('Failed to load contacts', err);
-  //     }
-  //   })
-  // }
-
   LoadContacts() {
-    this.service.GetAll().subscribe(item => {
-      this.contactList = item;
-      this.contacts.data = this.contactList;
-
-      this.contacts = new MatTableDataSource(this.contactList);
+    this.service.GetAllContacts().subscribe(item => {
+      this.contacts.data = item;
     })
   }
 

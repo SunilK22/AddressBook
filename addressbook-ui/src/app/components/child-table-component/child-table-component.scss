@@ -1,0 +1,11 @@
+.entry-form {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 12px 0;
+}
+
+.entry-form mat-form-field {
+    min-width: 180px;
+}

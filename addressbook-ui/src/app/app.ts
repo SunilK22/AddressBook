@@ -1,7 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-// import { NavComponent } from './components/nav-component/nav-component';
-// import { ContactComponent } from './components/contact-component/contact-component';
+
 
 @Component({
   imports: [RouterOutlet],

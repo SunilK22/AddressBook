@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -22,34 +22,27 @@ export class PersonalInfoComponent  {
   selectedValue = signal('');
 
   titles: selectOpt[] = [
-    { value: 'mr', viewValue: 'Mr' },
-    { value: 'ms', viewValue: 'Ms' },
-    { value: 'mx', viewValue: 'Mx' },
+    { value: 0, viewValue: 'Mr' },
+    { value: 1, viewValue: 'Mrs' },
+    { value: 2, viewValue: 'Ms' },
+    { value: 3, viewValue: 'Mx' },
   ];
 
   categories: selectOpt[] = [
-    { value: 'bussiness', viewValue: "Business" },
-    { value: 'family', viewValue: "Family" },
-    { value: 'other', viewValue: "Other" }
+    { value: 0, viewValue: 'Business' },
+    { value: 1, viewValue: 'Family' },
+    { value: 2, viewValue: 'Other' }
 
   ]
 
-  constructor() { }
-
-  
   personalInfoForm = new FormGroup({
-    title: new FormControl('', Validators.required),
-    firstname: new FormControl('', Validators.compose([Validators.required, Validators.minLength(4), Validators.maxLength(50)])),
-    middlename: new FormControl('', Validators.compose([Validators.minLength(4), Validators.maxLength(50)])),
-    lastname: new FormControl('', Validators.compose([Validators.required, Validators.minLength(4), Validators.maxLength(50)])),
-    dob: new FormControl('', Validators.compose([Validators.required])),
+    title: new FormControl<number | null>(null, Validators.required),
+    firstname: new FormControl('', Validators.compose([Validators.required, Validators.maxLength(50)])),
+    middlename: new FormControl('', Validators.compose([Validators.maxLength(50)])),
+    lastname: new FormControl('', Validators.compose([Validators.required, Validators.maxLength(50)])),
+    dob: new FormControl<Date | null>(null, Validators.required),
     age: new FormControl({ value: '', disabled: true }),
-    gender: new FormControl('', Validators.required),
-    category: new FormControl('', Validators.required)
+    gender: new FormControl<number | null>(null, Validators.required),
+    category: new FormControl<number | null>(null, Validators.required)
   })
-
- 
-  saveContact() {
-
-  }
 }

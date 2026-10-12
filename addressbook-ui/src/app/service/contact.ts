@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, Service } from '@angular/core';
-import { contact } from '../model/contactmodel';
+import { inject, Injectable } from '@angular/core';
+import { completeContact, contact } from '../model/contactmodel';
 
-@Service()
+@Injectable({ providedIn: 'root' })
 export class ContactService {
 
     baseurl = 'http://localhost:5207/api/contacts';
@@ -14,7 +14,7 @@ export class ContactService {
 
     }
 
-    GetAll() {
+    GetAllContacts() {
         return this.http.get<contact[]>(this.baseurl);
     }
 
@@ -22,12 +22,12 @@ export class ContactService {
         return this.http.get<contact>(this.baseurl + '/' + id);
     }
 
-    CreateContact(_data: contact) {
+    CreateContact(_data: completeContact) {
         return this.http.post(this.baseurl, _data);
     }
 
     UpdateContact(_data: contact) {
-        return this.http.put(this.baseurl + '/' + _data.id, _data);
+        return this.http.put(this.baseurl + '/' + _data.contactID, _data);
     }
 
     DeleteContact(id: number) {
