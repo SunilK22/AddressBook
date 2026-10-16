@@ -22,12 +22,12 @@ import { CommonModule } from '@angular/common';
 export class PersonalInfoComponent  {
 
 
-  private _personalDetails: FormGroup | null = null;
+  private _personalDetails!: FormGroup;
   @Input() set personalDetails(value: FormGroup){
     this._personalDetails = value;
   }
 
-  get personalDetails(): FormGroup | null{
+  get personalDetails(): FormGroup{
     return this._personalDetails;
   }
 
