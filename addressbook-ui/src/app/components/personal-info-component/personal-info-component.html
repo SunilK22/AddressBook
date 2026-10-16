@@ -1,4 +1,4 @@
-<div class="example-form" [formGroup]="personalInfoForm">
+<div class="example-form" [formGroup]="personalDetails">
     <header>
         <h3>
             Personal Information
@@ -15,14 +15,25 @@
                         <mat-option [value]="item.value">{{item.viewValue}}</mat-option>
                         }
                     </mat-select>
+                    @if(personalDetails.get('title')?.hasError('required')){
+                    <mat-error>
+                        *Please select title.
+                    </mat-error>
+                    }
                 </mat-form-field>
             </div>
         </mat-label>
+
         <label>
             First Name
             <div>
                 <mat-form-field>
                     <input matInput formControlName="firstname" />
+                    @if(personalDetails.get('firstname')?.hasError('required')){
+                    <mat-error>
+                        *First name is required.
+                    </mat-error>
+                    }
                 </mat-form-field>
             </div>
         </label>
@@ -31,7 +42,6 @@
             Middle Name
             <div>
                 <mat-form-field>
-
                     <input matInput formControlName="middlename" />
                 </mat-form-field>
             </div>
@@ -40,12 +50,15 @@
             Last Name
             <div>
                 <mat-form-field>
-
                     <input formControlName="lastname" matInput />
+                    @if(personalDetails.get('lastname')?.hasError('required')){
+                    <mat-error>
+                        *Last name is required.
+                    </mat-error>
+                    }
                 </mat-form-field>
             </div>
         </label>
-
 
     </div>
     <div class="container">
@@ -56,9 +69,13 @@
                     <mat-radio-button [value]="0">Male</mat-radio-button>
                     <mat-radio-button [value]="1">Female</mat-radio-button>
                     <mat-radio-button [value]="2">Other</mat-radio-button>
-
                 </mat-radio-group>
             </div>
+            
+            @if (personalDetails.get('gender')?.hasError('required') && personalDetails.get('gender')?.touched) {
+            <small class="alert-error">*Gender is required.</small>
+            }
+
         </label>
 
         <label>
@@ -69,8 +86,15 @@
                     <input matInput [matDatepicker]="picker" formControlName="dob">
                     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
+
+                    @if(personalDetails.get('dob')?.hasError('required')){
+                    <mat-error>
+                        *Date of birth is required.
+                    </mat-error>
+                    }
                 </mat-form-field>
             </div>
+
         </label>
         <label>
             Age
@@ -90,8 +114,15 @@
                         <mat-option [value]="item.value">{{item.viewValue}}</mat-option>
                         }
                     </mat-select>
+
+                    @if(personalDetails.get('category')?.hasError('required')){
+                    <mat-error>
+                        *Categiry is required.
+                    </mat-error>
+                    }
                 </mat-form-field>
             </div>
+
         </label>
     </div>
 </div>

@@ -1,3 +1,4 @@
+@if (!isViewMode) {
 <div class="entry-form">
     <mat-form-field>
         <mat-label>Type</mat-label>
@@ -19,8 +20,9 @@
         Add
     </button>
 </div>
+}
 
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z1 w-full">
+<table mat-table [dataSource]="tableRows" class="mat-elevation-z1 w-full">
     <ng-container matColumnDef="type">
         <th mat-header-cell *matHeaderCellDef>Type</th>
         <td mat-cell *matCellDef="let element">{{ typeLabel(element.type) }}</td>
@@ -33,11 +35,13 @@
 
     <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef>Actions</th>
-        <td mat-cell *matCellDef="let element">
-            <button mat-icon-button color="warn" type="button" aria-label="Remove item"
-                (click)="removeItem(element)">
+        <td mat-cell *matCellDef="let element; let index = index">
+            @if (!isViewMode) {
+            <button mat-icon-button color="warn" type="button"
+                (click)="removeItem(index)">
                 <mat-icon>delete</mat-icon>
             </button>
+            }
         </td>
     </ng-container>
 

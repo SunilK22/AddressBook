@@ -1,8 +1,11 @@
 export interface contact {
   contactID: number;
+  title: number;
   firstName: string;
-  middleName?: string | null;
-  lastName: string | null;
+  middleName: string | null;
+  lastName: string;
+  dateOfBirth: string;
+  gender: number;
   contactCategory: number;
   phones: PhoneDto[];
   emails: EmailDto[];
@@ -38,11 +41,11 @@ export interface SocialMediaDto {
 }
 
 export interface completeContact {
+  title: number;
   firstName: string;
   middleName: string | null;
   lastName: string;
   dateOfBirth: string;
-  title: number;
   gender: number;
   contactCategory: number;
   phones: PhoneDto[];

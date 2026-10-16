@@ -15,11 +15,11 @@ export class ContactService {
     }
 
     GetAllContacts() {
-        return this.http.get<contact[]>(this.baseurl);
+        return this.http.get<completeContact[]>(this.baseurl);
     }
 
     GetContactById(id: number) {
-        return this.http.get<contact>(this.baseurl + '/' + id);
+        return this.http.get<completeContact>(this.baseurl + '/' + id);
     }
 
     CreateContact(_data: completeContact) {

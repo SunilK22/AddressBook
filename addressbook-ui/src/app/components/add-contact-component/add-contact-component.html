@@ -1,27 +1,26 @@
-<form (ngSubmit)="SaveContact()">
+<form (ngSubmit)="saveContact()" [formGroup]="form">
     <mat-card>
         <mat-card-header>
-            <h2>Add New Contact</h2>
+            <h2>{{ isViewMode ? 'Contact Details' : 'Add New Contact' }}</h2>
             <span class="example-spacer"></span>
 
+            @if (!isViewMode) {
             <button matButton="filled" type="submit">Save</button>
             <button matButton="tonal" type="button">Cancel</button>
+            }
         </mat-card-header>
+
         <mat-card-content>
-            <section>
-                <app-personal-info-component></app-personal-info-component>
-            </section>
+            <app-personal-info-component [personalDetails]="personalDetails">
+            </app-personal-info-component>
 
             <mat-accordion>
                 <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
                     <mat-expansion-panel-header>
                         <mat-panel-title>Phone Numbers</mat-panel-title>
                     </mat-expansion-panel-header>
-                    <app-child-table-component
-                        tableTitle="Phone Number"
-                        kind="phone"
-                        [dataSource]="phones"
-                        (dataSourceChange)="phones = $event">
+                    <app-child-table-component tableTitle="Phone Number" kind="phone" [arrayData]="phones"
+                        [isViewMode]="isViewMode">
                     </app-child-table-component>
                 </mat-expansion-panel>
 
@@ -29,11 +28,8 @@
                     <mat-expansion-panel-header>
                         <mat-panel-title>Email Addresses</mat-panel-title>
                     </mat-expansion-panel-header>
-                    <app-child-table-component
-                        tableTitle="Email Address"
-                        kind="email"
-                        [dataSource]="emails"
-                        (dataSourceChange)="emails = $event">
+                    <app-child-table-component tableTitle="Email Address" kind="email" [arrayData]="emails"
+                        [isViewMode]="isViewMode">
                     </app-child-table-component>
                 </mat-expansion-panel>
 
@@ -41,11 +37,8 @@
                     <mat-expansion-panel-header>
                         <mat-panel-title>Social Media Contacts</mat-panel-title>
                     </mat-expansion-panel-header>
-                    <app-child-table-component
-                        tableTitle="Social Media Address"
-                        kind="socialMedia"
-                        [dataSource]="socialMedia"
-                        (dataSourceChange)="socialMedia = $event">
+                    <app-child-table-component tableTitle="Social Media Address" kind="socialMedia"
+                        [arrayData]="socialMedias" [isViewMode]="isViewMode">
                     </app-child-table-component>
                 </mat-expansion-panel>
             </mat-accordion>
