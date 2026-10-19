@@ -1,5 +1,5 @@
 export interface contact {
-  contactID: number;
+  contactID?: number;
   title: number;
   firstName: string;
   middleName: string | null;
@@ -38,17 +38,4 @@ export interface SocialMediaDto {
   socialMediaID?: number;
   socialMediaAddress: string;
   socialMediaType: number;
-}
-
-export interface completeContact {
-  title: number;
-  firstName: string;
-  middleName: string | null;
-  lastName: string;
-  dateOfBirth: string;
-  gender: number;
-  contactCategory: number;
-  phones: PhoneDto[];
-  emails: EmailDto[];
-  socialMedias: SocialMediaDto[];
 }

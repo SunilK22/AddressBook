@@ -6,7 +6,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ContactService } from '../../service/contact';
-import { completeContact, contact } from '../../model/contactmodel';
+import { contact } from '../../model/contactmodel';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
@@ -23,12 +23,13 @@ import { Router } from '@angular/router';
 export class ContactComponent implements OnInit, AfterViewInit {
 
   displayedColumns: string[] = ['id', 'name', 'category', 'phones', 'emails', 'socialmedias', 'actions'];
-  contacts = new MatTableDataSource<completeContact>();
+  contacts = new MatTableDataSource<contact>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   private router = inject(Router);
+  private contactCache = inject(ContactService);
 
   constructor(private service: ContactService) {
 
@@ -50,6 +51,12 @@ export class ContactComponent implements OnInit, AfterViewInit {
   }
 
   ViewContact(contact: contact) {
-    this.router.navigate(['/contact/view', contact?.contactID]);
+    if (contact.contactID === undefined) {
+      return;
+    }
+
+    this.contactCache.setContact({ ...contact, contactID: contact.contactID });
+
+    this.router.navigate(['/contact/view', contact.contactID]);
   }
 }

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -6,7 +6,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { ContactService } from '../../service/contact';
-import { childTable, completeContact } from '../../model/contactmodel';
+import { childTable, contact } from '../../model/contactmodel';
 import { ChildTableComponent } from '../child-table-component/child-table-component';
 import { PersonalInfoComponent } from '../personal-info-component/personal-info-component';
 import { ActivatedRoute } from '@angular/router';
@@ -26,19 +26,21 @@ import { ActivatedRoute } from '@angular/router';
   styleUrl: './add-contact-component.scss',
   templateUrl: './add-contact-component.html',
 })
-export class AddContactComponent implements OnInit {
+export class AddContactComponent implements OnInit, OnDestroy {
   panelOpenState = signal(false);
 
   form!: FormGroup;
   fb!: FormBuilder;
   isViewMode = false;
+  contactData!: contact;
+  private currentContactId: number | null = null;
   private route = inject(ActivatedRoute);
 
   constructor(private _fb: FormBuilder, private contactService: ContactService, private cd: ChangeDetectorRef) {
     this.fb = _fb;
   }
 
-  buildForm(contact: completeContact | null = null): FormGroup {
+  buildForm(contact: contact | null = null): FormGroup {
     let fgroup = this.fb.group({
       personalDetails: this.fb.group({
         title: new FormControl<number | null>(contact?.title ?? null, Validators.required),
@@ -94,6 +96,13 @@ export class AddContactComponent implements OnInit {
       this.isViewMode = true;
       this.loadContactDetails(Number(contactId));
     }
+
+  }
+
+  ngOnDestroy(): void {
+    if (this.currentContactId !== null) {
+      this.contactService.clearContact(this.currentContactId);
+    }
   }
 
 
@@ -115,8 +124,7 @@ export class AddContactComponent implements OnInit {
 
   loadContactDetails(id: number): void {
     this.contactService.GetContactById(id).subscribe({
-      next: (contactData: completeContact) => {
-
+      next: (contactData: contact) => {
         this.form = this.buildForm(contactData);
         this.cd.markForCheck();
         if (this.isViewMode) {
@@ -148,7 +156,7 @@ export class AddContactComponent implements OnInit {
       return;
     }
 
-    const data: completeContact = {
+    const data: contact = {
       firstName: personalDetails.firstname.trim(),
       middleName: personalDetails.middlename?.trim() || null,
       lastName: personalDetails.lastname.trim(),
