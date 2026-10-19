@@ -36,7 +36,7 @@ export class ContactComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.LoadContacts();
+    this.loadContacts();
   }
 
   ngAfterViewInit(): void {
@@ -44,19 +44,27 @@ export class ContactComponent implements OnInit, AfterViewInit {
     this.contacts.sort = this.sort;
   }
 
-  LoadContacts() {
+  loadContacts() {
     this.service.GetAllContacts().subscribe(item => {
       this.contacts.data = item;
+
+      item.forEach(contact => {
+        this.contactCache.setContact(contact);
+      });
     })
   }
 
-  ViewContact(contact: contact) {
-    if (contact.contactID === undefined) {
-      return;
-    }
-
-    this.contactCache.setContact({ ...contact, contactID: contact.contactID });
+  viewContact(contact: contact) {
 
     this.router.navigate(['/contact/view', contact.contactID]);
+  }
+
+  editContact(contact: contact) {
+
+    this.router.navigate(['/contact/edit', contact.contactID]);
+  }
+
+  deleteContact(contact: contact) {
+
   }
 }

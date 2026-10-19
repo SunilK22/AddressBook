@@ -10,37 +10,37 @@
 
                 <!-- ID Column -->
                 <ng-container matColumnDef="id">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> # </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="contactID"> # </th>
                     <td mat-cell *matCellDef="let row"> {{row.contactID}} </td>
                 </ng-container>
 
                 <!-- Name Column -->
                 <ng-container matColumnDef="name">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="firstName"> Name </th>
                     <td mat-cell *matCellDef="let row"> {{row.firstName}} {{row.middleName || ''}} {{row.lastName}} </td>
                 </ng-container>
 
                 <!-- Category Column -->
                 <ng-container matColumnDef="category">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Category </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="contactCategory"> Category </th>
                     <td mat-cell *matCellDef="let row"> {{row.contactCategory}} </td>
                 </ng-container>
 
                 <!-- Phone Column -->
                 <ng-container matColumnDef="phones">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Phone(s) </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="phones"> Phone(s) </th>
                     <td mat-cell *matCellDef="let row"> {{row.phones?.length || 0}} </td>
                 </ng-container>
 
                 <!-- Email Column -->
                 <ng-container matColumnDef="emails">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Email(s) </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="emails"> Email(s) </th>
                     <td mat-cell *matCellDef="let row"> {{row.emails?.length || 0}} </td>
                 </ng-container>
 
                 <!-- Social Media Column -->
                 <ng-container matColumnDef="socialmedias">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Social Media(s) </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="socialMedias"> Social Media(s) </th>
                     <td mat-cell *matCellDef="let row"> {{row.socialMedias?.length || 0}} </td>
                 </ng-container>
 
@@ -48,10 +48,10 @@
                 <ng-container matColumnDef="actions">
                     <th mat-header-cell *matHeaderCellDef> Actions </th>
                     <td mat-cell *matCellDef="let row">
-                        <button mat-icon-button color="primary" aria-label="View item" (click)="ViewContact(row)">
+                        <button mat-icon-button color="primary" aria-label="View item" (click)="viewContact(row)">
                             <mat-icon>visibility</mat-icon>
                         </button>
-                        <button mat-icon-button color="primary" aria-label="Edit item">
+                        <button mat-icon-button color="primary" aria-label="Edit item" (click)="editContact(row)">
                             <mat-icon>edit</mat-icon>
                         </button>
                         <button mat-icon-button color="warn" aria-label="Delete item">

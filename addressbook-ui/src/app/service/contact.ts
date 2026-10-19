@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { contact } from '../model/contactmodel';
+import { contact, IContact } from '../model/contactmodel';
 
 @Injectable({ providedIn: 'root' })
 export class ContactService {
@@ -14,7 +14,7 @@ export class ContactService {
 
     }
 
-    setContact(contact: contact & { contactID: number }): void {
+    setContact(contact: contact ): void {
         this.cachedContacts[contact.contactID] = contact;
     }
 
@@ -39,7 +39,7 @@ export class ContactService {
         return this.http.get<contact>(this.baseurl + '/' + id);
     }
 
-    CreateContact(_data: contact) {
+    CreateContact(_data: IContact) {
         return this.http.post(this.baseurl, _data);
     }
 

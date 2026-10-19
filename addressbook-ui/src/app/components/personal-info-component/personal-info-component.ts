@@ -6,7 +6,7 @@ import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
-import { selectOpt } from '../../model/contactmodel';
+import { ISelectOpt } from '../../model/contactmodel';
 import { CommonModule } from '@angular/common';
 
 
@@ -19,29 +19,28 @@ import { CommonModule } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush
 
 })
-export class PersonalInfoComponent  {
+export class PersonalInfoComponent {
 
 
   private _personalDetails!: FormGroup;
-  @Input() set personalDetails(value: FormGroup){
+  @Input() set personalDetails(value: FormGroup) {
     this._personalDetails = value;
   }
 
-  get personalDetails(): FormGroup{
+  get personalDetails(): FormGroup {
     return this._personalDetails;
   }
 
-  titles: selectOpt[] = [
+  titles: ISelectOpt[] = [
     { value: 0, viewValue: 'Mr' },
     { value: 1, viewValue: 'Mrs' },
     { value: 2, viewValue: 'Ms' },
     { value: 3, viewValue: 'Mx' },
   ];
 
-  categories: selectOpt[] = [
+  categories: ISelectOpt[] = [
     { value: 0, viewValue: 'Business' },
     { value: 1, viewValue: 'Family' },
     { value: 2, viewValue: 'Other' }
-
   ]
 }

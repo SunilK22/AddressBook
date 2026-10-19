@@ -6,10 +6,10 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { ContactService } from '../../service/contact';
-import { childTable, contact } from '../../model/contactmodel';
+import { IChildTable, contact, IContact } from '../../model/contactmodel';
 import { ChildTableComponent } from '../child-table-component/child-table-component';
 import { PersonalInfoComponent } from '../personal-info-component/personal-info-component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   imports: [
@@ -35,6 +35,7 @@ export class AddContactComponent implements OnInit, OnDestroy {
   contactData!: contact;
   private currentContactId: number | null = null;
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
 
   constructor(private _fb: FormBuilder, private contactService: ContactService, private cd: ChangeDetectorRef) {
     this.fb = _fb;
@@ -92,8 +93,9 @@ export class AddContactComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.form = this.buildForm();
     const contactId = this.route.snapshot.paramMap.get('id');
+    this.isViewMode = this.router.url.includes('view');
+
     if (contactId) {
-      this.isViewMode = true;
       this.loadContactDetails(Number(contactId));
     }
 
@@ -104,7 +106,6 @@ export class AddContactComponent implements OnInit, OnDestroy {
       this.contactService.clearContact(this.currentContactId);
     }
   }
-
 
   get personalDetails(): FormGroup {
     return this.form.get('personalDetails') as FormGroup;
@@ -123,16 +124,14 @@ export class AddContactComponent implements OnInit, OnDestroy {
   }
 
   loadContactDetails(id: number): void {
-    this.contactService.GetContactById(id).subscribe({
-      next: (contactData: contact) => {
-        this.form = this.buildForm(contactData);
-        this.cd.markForCheck();
-        if (this.isViewMode) {
-          this.form.disable();
-        }
-      },
-      error: (err) => console.error('Error fetching contact', err)
-    });
+
+    const contactData = this.contactService.getContact(id);
+    this.form = this.buildForm(contactData);
+    this.cd.markForCheck();
+
+    if (this.isViewMode) {
+      this.form.disable();
+    }
   }
 
   private parseDate(date: string | undefined): Date | null {
@@ -156,7 +155,7 @@ export class AddContactComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const data: contact = {
+    const data: IContact = {
       firstName: personalDetails.firstname.trim(),
       middleName: personalDetails.middlename?.trim() || null,
       lastName: personalDetails.lastname.trim(),
@@ -164,15 +163,15 @@ export class AddContactComponent implements OnInit, OnDestroy {
       title: personalDetails.title,
       gender: personalDetails.gender,
       contactCategory: personalDetails.category,
-      phones: phones.map((row: childTable) => ({
+      phones: phones.map((row: IChildTable) => ({
         phoneNumber: row.value,
         contactMethodType: row.type
       })),
-      emails: emails.map((row: childTable) => ({
+      emails: emails.map((row: IChildTable) => ({
         emailAddress: row.value,
         contactMethodType: row.type
       })),
-      socialMedias: socialMedias.map((row: childTable) => ({
+      socialMedias: socialMedias.map((row: IChildTable) => ({
         socialMediaAddress: row.value,
         socialMediaType: row.type
       }))

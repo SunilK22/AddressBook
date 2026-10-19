@@ -39,7 +39,7 @@
     <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef>Actions</th>
         <td mat-cell *matCellDef="let element">
-            <button mat-icon-button color="warn" type="button" disabled=[!isViewMode]
+            <button mat-icon-button color="warn" type="button" [disabled]="isViewMode"
                 (click)="removeItem(arrayData.controls.indexOf(element))">
                 <mat-icon>delete</mat-icon>
             </button>

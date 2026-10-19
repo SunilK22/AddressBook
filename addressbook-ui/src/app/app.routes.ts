@@ -28,6 +28,11 @@ export const routes: Routes = [
                 path: 'contact/view/:id',
                 component: AddContactComponent,
                 title: 'View Contact',
+            },
+            {
+                path: 'contact/edit/:id',
+                component: AddContactComponent,
+                title: 'Edit Contact',
             }
         ]
     }

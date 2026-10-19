@@ -6,7 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTable, MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
-import { childTable, selectOpt } from '../../model/contactmodel';
+import { IChildTable, ISelectOpt } from '../../model/contactmodel';
 import { Subscription } from 'rxjs';
 
 type ChildKind = 'phone' | 'email' | 'socialMedia';
@@ -26,12 +26,12 @@ export class ChildTableComponent implements OnInit, OnDestroy {
   @ViewChild(MatTable) table!: MatTable<unknown>;
 
   displayedColumns: string[] = ['type', 'value', 'actions'];
-  tableRows: childTable[] = [];
+  tableRows: IChildTable[] = [];
   newValue = '';
   newType = 0;
   maxLength = 20;
   inputType = 'tel';
-  typeOptions: selectOpt[] = [];
+  typeOptions: ISelectOpt[] = [];
   valueChanges!: Subscription;
 
   constructor(private cd: ChangeDetectorRef) {
