@@ -70,10 +70,11 @@ namespace AddressBook.Repository
         {
 
             var existingPhones = contact.Phones.ToList();
+
             // deleting phone from existing list
             foreach (var phone in existingPhones)
             {
-                var exists = contactDto.Phones.Any(p => p.PhoneID == phone.PhoneID);
+                var exists = contactDto.Phones.Any(p => p.PhoneID == phone.PhoneID );
                 if (!exists)
                 {
                     contact.Phones.Remove(phone);
@@ -316,11 +317,9 @@ namespace AddressBook.Repository
             // add/update/delete social media
             UpdateSocialMedia(contact, contactDto);
 
-
             await context.SaveChangesAsync(token);
             return contactDto;
         }
-
 
     }
 }

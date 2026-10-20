@@ -7,7 +7,7 @@ namespace AddressBook.DTOs
     public class PhoneDto
     {
 
-        public int PhoneID { get; set; }
+        public int? PhoneID { get; set; }
 
         [MaxLength(20)]
         public required string PhoneNumber { get; set; }
