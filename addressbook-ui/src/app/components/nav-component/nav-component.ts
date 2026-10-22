@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
@@ -8,11 +9,11 @@ import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { filter } from 'rxjs';
-import { FormsModule } from '@angular/forms'; 
+import { FormsModule } from '@angular/forms';
 
 
 @Component({
-  imports: [RouterLink, MatToolbarModule, MatButtonModule, MatIconModule, MatSidenavModule, 
+  imports: [RouterLink, MatToolbarModule, MatButtonModule, MatIconModule, MatSidenavModule,
     MatListModule, CommonModule, MatFormFieldModule, FormsModule, RouterOutlet],
   selector: 'app-nav-component',
   styleUrl: './nav-component.scss',
@@ -21,6 +22,7 @@ import { FormsModule } from '@angular/forms';
 export class NavComponent implements OnInit {
 
   private router = inject(Router);
+  private destroyRef = inject(DestroyRef);
 
   opened = signal(false);
 
@@ -28,20 +30,20 @@ export class NavComponent implements OnInit {
 
   searchQuery: string = '';
 
-
-  constructor() {
-
-  }
+  constructor() { }
 
   ngOnInit(): void {
     this.router.events
-      .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
+      .pipe(
+        filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+        takeUntilDestroyed(this.destroyRef)
+      )
       .subscribe((event: NavigationEnd) => {
         this.isContactPage.set(event.urlAfterRedirects === '/contact');
       });
   }
 
-
+  
   openSidenav() {
     let isOpened = this.opened();
     this.opened.set(!isOpened);

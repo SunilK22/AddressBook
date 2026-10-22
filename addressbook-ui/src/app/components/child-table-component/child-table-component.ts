@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, inject, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormControl, FormGroup, FormsModule, ValueChangeEvent } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -7,7 +7,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTable, MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { IChildTable, ISelectOpt } from '../../model/contactmodel';
-import { Subscription } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 type ChildKind = 'phone' | 'email' | 'socialMedia';
 
@@ -18,7 +18,7 @@ type ChildKind = 'phone' | 'email' | 'socialMedia';
   styleUrl: './child-table-component.scss',
   templateUrl: './child-table-component.html',
 })
-export class ChildTableComponent implements OnInit, OnDestroy {
+export class ChildTableComponent implements OnInit {
   @Input() tableTitle: string = 'Value';
   @Input() kind: ChildKind = 'phone';
   @Input() arrayData: FormArray = new FormArray<FormGroup>([]);
@@ -32,7 +32,9 @@ export class ChildTableComponent implements OnInit, OnDestroy {
   maxLength = 20;
   inputType = 'tel';
   typeOptions: ISelectOpt[] = [];
-  valueChanges!: Subscription;
+
+  private destroyRef = inject(DestroyRef);
+
 
   constructor(private cd: ChangeDetectorRef) {
 
@@ -40,9 +42,10 @@ export class ChildTableComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.tableRows = this.arrayData.getRawValue();
-    this.valueChanges = this.arrayData.valueChanges.subscribe(() => {
-      this.tableRows = this.arrayData.getRawValue();
-    });
+    this.arrayData.valueChanges.pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        this.tableRows = this.arrayData.getRawValue();
+      });
 
     if (this.kind === 'socialMedia') {
       this.typeOptions = [
@@ -73,11 +76,6 @@ export class ChildTableComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {
-    if (this.valueChanges) {
-      this.valueChanges.unsubscribe();
-    }
-  }
 
   addItem(): void {
     const value = this.newValue.trim();

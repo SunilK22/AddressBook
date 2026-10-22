@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -10,6 +10,7 @@ import { IChildTable, contact, IContact } from '../../model/contactmodel';
 import { ChildTableComponent } from '../child-table-component/child-table-component';
 import { PersonalInfoComponent } from '../personal-info-component/personal-info-component';
 import { ActivatedRoute, Router } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   imports: [
@@ -34,6 +35,9 @@ export class AddContactComponent implements OnInit, OnDestroy {
   isViewMode = false;
   contactData!: contact;
   private currentContactId: number | null = null;
+
+  private destroyRef = inject(DestroyRef);
+
   private route = inject(ActivatedRoute);
   private router = inject(Router);
 
@@ -93,6 +97,7 @@ export class AddContactComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.form = this.buildForm();
     const contactId = this.route.snapshot.paramMap.get('id');
+    this.currentContactId = Number(contactId);
     this.isViewMode = this.router.url.includes('view');
 
     if (contactId) {
@@ -102,9 +107,10 @@ export class AddContactComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.currentContactId !== null) {
-      this.contactService.clearContact(this.currentContactId);
-    }
+    // if (this.currentContactId !== null) {
+    //   this.contactService.clearContact(this.currentContactId);
+    // }
+
   }
 
   get personalDetails(): FormGroup {
@@ -177,21 +183,37 @@ export class AddContactComponent implements OnInit, OnDestroy {
       }))
     };
 
-
-    this.contactService.CreateContact(data).subscribe({
-      next: () => {
-        this.form.reset();
-        this.phones.clear();
-        this.emails.clear();
-        this.socialMedias.clear();
-        alert('Contact saved successfully.');
-      },
-      error: (error: unknown) => {
-        console.error('Error saving contact:', error);
-      }
+    if (this.currentContactId != null) {
+      this.contactService.UpdateContact({ ...data, contactID: this.currentContactId })
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
+          next: () => {
+            this.form.reset();
+            this.phones.clear();
+            this.emails.clear();
+            this.socialMedias.clear();
+            alert('Contact updated successfully.');
+          },
+          error: (error: unknown) => {
+            console.error('Error updating contact:', error);
+          }
+        });
+    } else {
+      this.contactService.CreateContact(data)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
+          next: () => {
+            this.form.reset();
+            this.phones.clear();
+            this.emails.clear();
+            this.socialMedias.clear();
+            alert('Contact saved successfully.');
+          },
+          error: (error: unknown) => {
+            console.error('Error saving contact:', error);
+          }
+        });
     }
-
-    );
   }
 
   private formatDate(date: Date): string {

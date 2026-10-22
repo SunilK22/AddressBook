@@ -26,19 +26,16 @@ export interface IChildTable {
 }
 
 export interface IPhoneData {
-  phoneID?: number;
   phoneNumber: string;
   contactMethodType: number;
 }
 
 export interface IEmailData {
-  emailAddressID?: number;
   emailAddress: string;
   contactMethodType: number;
 }
 
 export interface ISocialMediaData {
-  socialMediaID?: number;
   socialMediaAddress: string;
   socialMediaType: number;
 }

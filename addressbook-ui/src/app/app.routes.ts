@@ -14,7 +14,13 @@ export const routes: Routes = [
                 path: 'contact',
                 component: ContactComponent,
                 title: "Contacts",
-            }, {
+            },
+            {
+                path: '',
+                redirectTo: 'contact',
+                pathMatch: 'full',
+            },
+            {
                 path: 'categories',
                 component: AddContactComponent,
                 title: "Categories",

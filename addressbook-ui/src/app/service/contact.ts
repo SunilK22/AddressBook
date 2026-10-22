@@ -1,11 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { contact, IContact } from '../model/contactmodel';
+import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class ContactService {
 
-    baseurl = 'http://localhost:5207/api/contacts';
+    baseUrl = `${environment.apiUrl}/api/contacts`;
 
     private http = inject(HttpClient);
     private cachedContacts: Record<number, contact> = {};
@@ -14,7 +15,7 @@ export class ContactService {
 
     }
 
-    setContact(contact: contact ): void {
+    setContact(contact: contact): void {
         this.cachedContacts[contact.contactID] = contact;
     }
 
@@ -22,32 +23,29 @@ export class ContactService {
         return this.cachedContacts[id] ?? null;
     }
 
-    clearContact(id?: number): void {
-        if (id === undefined) {
-            this.cachedContacts = {};
-            return;
-        }
+    clearContact(id: number): void {
+
         delete this.cachedContacts[id];
     }
 
 
     GetAllContacts() {
-        return this.http.get<contact[]>(this.baseurl);
+        return this.http.get<contact[]>(this.baseUrl);
     }
 
     GetContactById(id: number) {
-        return this.http.get<contact>(this.baseurl + '/' + id);
+        return this.http.get<contact>(this.baseUrl + '/' + id);
     }
 
     CreateContact(_data: IContact) {
-        return this.http.post(this.baseurl, _data);
+        return this.http.post(this.baseUrl, _data);
     }
 
-    UpdateContact(_data: contact & { contactID: number }) {
-        return this.http.put(this.baseurl + '/' + _data.contactID, _data);
+    UpdateContact(_data: IContact & { contactID: number }) {
+        return this.http.put(this.baseUrl + '/' + _data.contactID, _data);
     }
 
     DeleteContact(id: number) {
-        return this.http.delete(this.baseurl + '/' + id);
+        return this.http.delete(this.baseUrl + '/' + id);
     }
 }
